@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from typing import Self
+
+from pydantic import BaseModel, Field, field_validator, model_validator
+
+from app.languages import is_supported
 
 # NLLB / FLORES-200 language codes look like ``eng_Latn`` or ``ukr_Cyrl``:
 # three lowercase letters, an underscore, then a capitalized 4-letter script.
@@ -39,6 +43,16 @@ class TranslationRequest(BaseModel):
             raise ValueError("text must not be blank")
         return value
 
+    @model_validator(mode="after")
+    def _languages_supported(self) -> Self:
+        for field_name, code in (
+            ("source_lang", self.source_lang),
+            ("target_lang", self.target_lang),
+        ):
+            if not is_supported(code):
+                raise ValueError(f"{field_name} '{code}' is not a supported language")
+        return self
+
 
 class TranslationResponse(BaseModel):
     """Response body for ``POST /translate``."""
@@ -57,3 +71,9 @@ class LanguagesResponse(BaseModel):
     """Response body for ``GET /languages``."""
 
     languages: list[Language]
+
+
+class ErrorResponse(BaseModel):
+    """Standard error envelope returned by the API's exception handlers."""
+
+    detail: str = Field(..., examples=["Unsupported language code: 'xyz_Zzzz'"])

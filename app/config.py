@@ -34,6 +34,11 @@ class Settings(BaseSettings):
     api_title: str = "Translator API"
     api_version: str = "0.1.0"
 
+    # Logging verbosity for the root logger (e.g. "DEBUG", "INFO", "WARNING").
+    log_level: str = "INFO"
+    # Upper bound on generated tokens per translation request.
+    max_output_tokens: int = 512
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:

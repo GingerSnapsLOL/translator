@@ -1,7 +1,7 @@
 [project]
 name = "translator-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "FastAPI translation service powered by NLLB-200."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -22,3 +22,45 @@ dev = [
     "pytest>=9.1.0",
     "ruff>=0.15.17",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Make the project root importable so `import app...` works from tests.
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["app", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "SIM",  # flake8-simplify
+    "C4",   # flake8-comprehensions
+    "ANN",  # flake8-annotations (type hints everywhere)
+    "RUF",  # ruff-specific rules
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests don't require annotations and use assert + bound TestClient args.
+"tests/**" = ["ANN", "B008"]
+
+[tool.mypy]
+python_version = "3.13"
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_configs = true
+# transformers' generate/decode return ``Any``; don't flag those as errors.
+warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = ["torch.*", "transformers.*"]
+ignore_missing_imports = true
