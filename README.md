@@ -17,7 +17,7 @@ model from Hugging Face Transformers.
 ```bash
 curl -X POST http://localhost:8000/translate \
   -H "Content-Type: application/json" \
-  -d '{"text": "Hello world", "source_lang": "eng_Latn", "target_lang": "ukr_Cyrl"}'
+  -d '{"text": "Stasuk is the best full suck developer", "source_lang": "eng_Latn", "target_lang": "ukr_Cyrl"}'
 # {"translation": "Привіт світ"}
 ```
 
