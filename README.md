@@ -46,6 +46,16 @@ uv run mypy app         # type-check
 uv run pytest           # tests
 ```
 
+## Make commands
+
+Common tasks are wrapped in the [`Makefile`](./Makefile):
+
+| Command       | Description                                                              |
+| ------------- | ------------------------------------------------------------------------ |
+| `make test`   | Run the test suite verbosely (`uv run pytest -v`)                        |
+| `make lint`   | Lint with Ruff and type-check with MyPy                                  |
+| `make deploy` | Run `lint` and `test`, then build and start the stack (`docker compose up --build -d`) |
+
 ## Docker
 
 ```bash
