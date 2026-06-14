@@ -31,7 +31,7 @@ pythonpath = ["."]
 [tool.ruff]
 line-length = 100
 target-version = "py313"
-src = ["app", "tests"]
+src = ["."]
 
 [tool.ruff.lint]
 select = [
@@ -45,6 +45,9 @@ select = [
     "ANN",  # flake8-annotations (type hints everywhere)
     "RUF",  # ruff-specific rules
 ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "tests"]
 
 [tool.ruff.lint.per-file-ignores]
 # Tests don't require annotations and use assert + bound TestClient args.
@@ -62,5 +65,5 @@ warn_unused_configs = true
 warn_return_any = false
 
 [[tool.mypy.overrides]]
-module = ["torch.*", "transformers.*"]
+module = ["torch", "torch.*", "transformers", "transformers.*"]
 ignore_missing_imports = true

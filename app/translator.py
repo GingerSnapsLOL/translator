@@ -145,7 +145,9 @@ class TranslationService:
             inputs = {key: value.to(self._device) for key, value in encoded.items()}
 
             with torch.inference_mode():
-                generated_tokens = model.generate(
+                # ``generate`` resolves through ``nn.Module.__getattr__`` in the
+                # torch stubs, which mypy infers as ``Tensor`` (not callable).
+                generated_tokens = model.generate(  # type: ignore[operator]
                     **inputs,
                     forced_bos_token_id=forced_bos_token_id,
                     max_length=self._settings.max_output_tokens,
