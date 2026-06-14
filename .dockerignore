@@ -1,0 +1,15 @@
+# Keep the build context small and reproducible.
+.venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.python-version
+.env
+.dockerignore
+Dockerfile
+docker-compose.yml
+README.md
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
